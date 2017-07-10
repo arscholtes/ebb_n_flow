@@ -1,24 +1,26 @@
-
 var audio = document.querySelector('#audio');
 var band = document.querySelector('#band');
 var search = document.querySelector('#search');
 var song_bucket = document.querySelector('#song_bucket');
 //searching for sc objects through api
-search.addEventListener('click', function(){
-  SC.get('/tracks', {q: band.value, limit: 16})
-    .then(function(json){
+search.addEventListener('click', function() {
+  SC.get('/tracks', {
+      q: band.value,
+      limit: 16
+    })
+    .then(function(json) {
       console.log(json);
-      for(let i = 0; i < json.length; i++){
+      for (let i = 0; i < json.length; i++) {
         let div = document.createElement("DIV");
         div.setAttribute('class', 'song_div');
-        div.addEventListener('click', function(e){
+        div.addEventListener('click', function(e) {
           SC.oEmbed(json[i].uri, {
             element: document.getElementById('player'),
             auto_play: true
           });
         })
         song_bucket.appendChild(div);
-//creating elements to put on screen
+        //creating elements to put on screen
         let albumCover = document.createElement("IMG");
         albumCover.setAttribute("class", "song_art");
         albumCover.setAttribute("src", json[i].artwork_url);
@@ -33,5 +35,6 @@ search.addEventListener('click', function(){
         band_name.textContent = json[i].user.username;
         band_name.setAttribute("class", "song_artist");
         div.appendChild(band_name);
-      }})
-  });
+      }
+    })
+});
